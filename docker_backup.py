@@ -100,20 +100,18 @@ def backup(api_key):
     outputs[service] = get_stats(service)
     attachments.append(create_attachment(service))
 
-  elapsed_time = datetime.now() - start_time
-  email_subject = "Backup Ran With Errors" if backup_ran_with_errors else "Backup Succeeded"
-
   if backup_ran_with_errors:
+    elapsed_time = datetime.now() - start_time
+    email_subject = "Backup Ran With Errors"
+
     email_msg = "An error occurred. Return codes: " + \
       ", ".join(["{0} ({1})".format(service, retcode) for (service, retcode) in return_codes.items()]) + \
       ". Please check the logs for more details."
-  else:
-    email_msg = "Backup succeeded."
 
-  # Format the body of the email to show how much data was transferred
-  outputs_text = "\n\n".join(["{0}:\n{1}".format(service, output) for (service, output) in outputs.items()])
-  email_body = "{0}\n\nElapsed time: {1}\n\nOutputs:\n\n{2}".format(email_msg, elapsed_time, outputs_text)
-  send_result_email(api_key, email_subject, email_body, attachments)
+    # Format the body of the email to show how much data was transferred
+    outputs_text = "\n\n".join(["{0}:\n{1}".format(service, output) for (service, output) in outputs.items()])
+    email_body = "{0}\n\nElapsed time: {1}\n\nOutputs:\n\n{2}".format(email_msg, elapsed_time, outputs_text)
+    send_result_email(api_key, email_subject, email_body, attachments)
 
 if __name__ == "__main__":
   api_key = parse_args()
