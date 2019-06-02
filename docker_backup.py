@@ -25,6 +25,7 @@ backup_drives = {
   "isso": DOCKER_VOLUME_DATA.format("isso"),
   "gitea": "/var/lib/gitea",
   "minio": DOCKER_VOLUME_DATA.format("minio"),
+  "minecraft": DOCKER_VOLUME_DATA.format("minecraft"),
 }
 
 def parse_args():
